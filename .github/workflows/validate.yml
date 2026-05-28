@@ -1,0 +1,58 @@
+name: validate-templates
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  # Репозиторий с релизами srekit. Поменяй, если бинарь лежит в другом месте.
+  SREKIT_REPO: jtprogru/srekit
+  # Glob под имя linux/amd64 ассета в релизе. Подстрой под реальные имена
+  # ассетов GoReleaser (например, srekit_Linux_x86_64.tar.gz).
+  SREKIT_ASSET_PATTERN: "*[Ll]inux*x86_64*.tar.gz"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install srekit from GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/srekit
+          gh release download --repo "$SREKIT_REPO" \
+            --pattern "$SREKIT_ASSET_PATTERN" --dir /tmp/srekit
+          tar -xzf /tmp/srekit/*.tar.gz -C /tmp/srekit
+          bin="$(find /tmp/srekit -type f -name srekit | head -n1)"
+          if [ -z "$bin" ]; then
+            echo "srekit binary not found in release asset" >&2
+            exit 1
+          fi
+          sudo install -m 0755 "$bin" /usr/local/bin/srekit
+          srekit version || true
+
+      - name: Validate override templates
+        env:
+          SREKIT_TEMPLATES_DIR: ${{ github.workspace }}
+        run: srekit templates validate
+
+      - name: Validate extra/ templates (bring-your-own)
+        run: |
+          set -euo pipefail
+          # extra/ шаблоны srekit не знает по имени — рендерим их через
+          # команду runbook (надмножество полей: .Title .Service .Alert .Now .ID).
+          for tmpl in extra/*.md.tmpl; do
+            echo "rendering $tmpl"
+            srekit runbook \
+              --title "CI smoke" --service ci --alert ci-alert \
+              --template "$tmpl" --stdout >/dev/null
+          done

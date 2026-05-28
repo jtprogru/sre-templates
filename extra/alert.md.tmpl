@@ -1,0 +1,67 @@
+---
+id: {{ .ID }}
+creation_date: {{ .Now }}
+type: alert
+service: {{ .Service }}
+alert: {{ .Alert }}
+tags:
+- alert
+- monitoring
+- oncall
+---
+
+# Алерт (Alert) — {{ .Alert | default "<alert name>" }}
+
+- **Алерт (Alert):** {{ .Alert | default "<alert name>" }}
+- **Сервис (Service):** {{ .Service | default "<service name>" }}
+- **Рунбук (Runbook):** _ссылка на runbook-{{ .Alert | default "alert" }}.md_
+- **Команда-владелец (Owner team):** _заполнить_
+- **Будит пейджером (Paging):** _да (page) / нет (ticket)_
+
+## Что означает (What it means)
+
+_Симптом со стороны пользователя, а не внутренняя причина. Почему это важно._
+
+## На какой SLO влияет (SLO impact)
+
+- Затронутый SLO: _ссылка на slo-{{ .Service }}.md_
+- Тип: _availability / latency / error rate / saturation_
+
+## Условие срабатывания (Alert condition)
+
+```promql
+# Выражение алерта. Привязывай к симптому и burn-rate, не к голому порогу.
+```
+
+- **For (длительность):** _напр. 5m — чтобы не дёргаться на спайках_
+- **Порог (Threshold):** _значение и почему именно оно_
+
+## Severity и маршрутизация (Severity & routing)
+
+- Severity: _SEV-1 / SEV-2 / warning_
+- Куда уходит: _pager / slack-канал / тикет_
+- Время реакции (response SLA):
+
+## Первичная реакция (First response)
+
+_Что сделать в первые минуты. Подробности — в рунбуке._
+
+1. Открыть дашборд: _ссылка_
+2. Проверить недавние деплои.
+3. Если подтверждается — следовать рунбуку.
+
+## Частые ложные срабатывания (Known false positives)
+
+_Когда этот алерт врёт и что с этим делать. Если пусто — хорошо._
+
+-
+
+## Тюнинг (Tuning history)
+
+| Дата | Что изменили | Почему |
+|------|--------------|--------|
+|      |              |        |
+
+## Ссылки (References)
+
+-
