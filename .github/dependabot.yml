@@ -1,0 +1,11 @@
+version: 2
+updates:
+  # Держим версии используемых GitHub Actions свежими.
+  # srekit пинится отдельно через SREKIT_VERSION в workflow и
+  # отслеживается weekly drift.yml.
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: ci

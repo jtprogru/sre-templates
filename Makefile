@@ -5,7 +5,7 @@ export SREKIT_TEMPLATES_DIR := $(CURDIR)
 
 .DEFAULT_GOAL := help
 
-.PHONY: help validate validate-extra diff diff-name pull
+.PHONY: help validate validate-extra diff diff-name pull hooks
 
 help: ## Показать список целей
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
@@ -29,3 +29,7 @@ diff-name: ## Только список разошедшихся файлов
 
 pull: ## Стянуть обновления шаблонов команды (git pull --ff-only)
 	srekit templates pull
+
+hooks: ## Включить локальные git-хуки из .githooks (pre-commit → make validate)
+	git config core.hooksPath .githooks
+	@echo "git hooks enabled (core.hooksPath=.githooks)"

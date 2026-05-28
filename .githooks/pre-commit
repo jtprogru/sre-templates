@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+# Локальный гейт: валидируем шаблоны до коммита.
+# Включается через `make hooks` (ставит core.hooksPath=.githooks).
+set -e
+
+if ! command -v srekit >/dev/null 2>&1; then
+  echo "pre-commit: srekit не найден в PATH — пропускаю валидацию шаблонов." >&2
+  exit 0
+fi
+
+make validate validate-extra

@@ -10,11 +10,13 @@ permissions:
   contents: read
 
 env:
-  # Репозиторий с релизами srekit. Поменяй, если бинарь лежит в другом месте.
+  # Репозиторий с релизами srekit.
   SREKIT_REPO: jtprogru/srekit
-  # Glob под имя linux/amd64 ассета в релизе. Подстрой под реальные имена
-  # ассетов GoReleaser (например, srekit_Linux_x86_64.tar.gz).
-  SREKIT_ASSET_PATTERN: "*[Ll]inux*x86_64*.tar.gz"
+  # Запиненная версия srekit для воспроизводимых проверок на PR.
+  # Бампай вручную; weekly drift.yml подскажет, когда апстрим ушёл вперёд.
+  SREKIT_VERSION: v0.10.2
+  # Имя linux/amd64 ассета релиза (GoReleaser).
+  SREKIT_ASSET_PATTERN: "srekit_Linux_x86_64.tar.gz"
 
 jobs:
   validate:
@@ -29,7 +31,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p /tmp/srekit
-          gh release download --repo "$SREKIT_REPO" \
+          gh release download "$SREKIT_VERSION" --repo "$SREKIT_REPO" \
             --pattern "$SREKIT_ASSET_PATTERN" --dir /tmp/srekit
           tar -xzf /tmp/srekit/*.tar.gz -C /tmp/srekit
           bin="$(find /tmp/srekit -type f -name srekit | head -n1)"

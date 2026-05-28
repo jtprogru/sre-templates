@@ -1,0 +1,52 @@
+name: drift-check
+
+# Ставит ПОСЛЕДНИЙ релиз srekit и проверяет, что наши шаблоны всё ещё
+# валидны против его embedded-набора. Ловит переименованные/удалённые поля
+# и новые embedded-шаблоны после апгрейда бинаря (см. TEMPLATES.md).
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # каждый понедельник 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  SREKIT_REPO: jtprogru/srekit
+  SREKIT_ASSET_PATTERN: "srekit_Linux_x86_64.tar.gz"
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install latest srekit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/srekit
+          gh release download --repo "$SREKIT_REPO" \
+            --pattern "$SREKIT_ASSET_PATTERN" --dir /tmp/srekit
+          tar -xzf /tmp/srekit/*.tar.gz -C /tmp/srekit
+          bin="$(find /tmp/srekit -type f -name srekit | head -n1)"
+          sudo install -m 0755 "$bin" /usr/local/bin/srekit
+          srekit version
+
+      # Гейт: если поле переименовано/удалено в новом бинаре — упадёт.
+      - name: Validate against latest embedded set
+        env:
+          SREKIT_TEMPLATES_DIR: ${{ github.workspace }}
+        run: srekit templates validate
+
+      # Информативно: состояние и расхождение с embedded.
+      - name: Show templates state
+        if: always()
+        env:
+          SREKIT_TEMPLATES_DIR: ${{ github.workspace }}
+        run: |
+          srekit templates list || true
+          srekit templates diff --name-only || true

@@ -1,5 +1,8 @@
 # sre-templates
 
+[![validate-templates](https://github.com/jtprogru/sre-templates/actions/workflows/validate.yml/badge.svg)](https://github.com/jtprogru/sre-templates/actions/workflows/validate.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+
 Кастомный набор шаблонов для [`srekit`](https://github.com/jtprogru/srekit) —
 SRE-документы (постмортемы, рунбуки, SLO, инциденты и т.д.) на Go
 `text/template`. Файлы в корне переопределяют встроенные шаблоны srekit;
@@ -71,6 +74,17 @@ PR ставит `srekit` из релиза и гоняет `srekit templates val
 шаблонов из `extra/`. Это ловит опечатки в `.Field` и сломанный синтаксис.
 Если бинарь srekit лежит не в `jtprogru/srekit` или ассеты названы иначе —
 поправь `SREKIT_REPO` / `SREKIT_ASSET_PATTERN` в начале workflow.
+
+## Разработка
+
+```bash
+make hooks    # включить pre-commit (валидирует шаблоны до коммита)
+make help     # все доступные цели
+```
+
+Изменения фиксируем в [`CHANGELOG.md`](./CHANGELOG.md) (Keep a Changelog).
+Версии GitHub Actions держит свежими Dependabot; срекит в CI запинен и
+отслеживается еженедельным `drift-check`.
 
 ## Лицензия
 
