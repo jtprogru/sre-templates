@@ -1,0 +1,115 @@
+version: 1
+
+frontmatter:
+  id: "{{ .Meta.ID }}"
+  creation_date: "{{ .Meta.Now }}"
+  type: postmortem
+  title: "{{ .Meta.Title }}"
+  severity: "{{ .Meta.Severity }}"
+  owner: "{{ .Meta.Owner }}"
+  tags:
+    - postmortem
+    - incident
+
+title: "Постмортем (Postmortem) — {{ .Meta.Title }}"
+
+header_body: |
+  > **Безобвинительный разбор (blameless):** ищем причины в системе, процессах и недостающих защитах — не в людях. Любой действовал исходя из того, что знал и видел в тот момент.
+  
+  - **Тяжесть (Severity):** {{ .Meta.Severity }}
+  - **Ответственный (Owner):** {{ .Meta.Owner | default "<incident owner>" }}
+  - **Начало (Started):** {{ .Meta.Start | default "<start time>" }}
+  - **Конец (Resolved):** {{ .Meta.End | default "<end time>" }}
+  - **Длительность (Duration):** _заполнить после составления хронологии_
+  {{ range .Sections }}
+
+sections:
+  - id: summary
+    title: Краткое описание (Summary)
+    type: text
+    default_body: |
+      _Один абзац: что произошло, кого затронуло, как смягчили._
+    required: true
+  - id: impact
+    title: Влияние (Impact)
+    type: list
+    items:
+      - 'Влияние на пользователей:'
+      - 'Расход SLO / SLI:'
+      - 'Внутреннее влияние:'
+    required: true
+  - id: timeline
+    title: Хронология (Timeline)
+    type: table
+    default_body: (Все времена в UTC.)
+    columns:
+      - Время
+      - Событие
+    rows:
+      - - '{{ .Meta.Start }}'
+        - Инцидент начался
+      - - ""
+        - ""
+      - - '{{ .Meta.End }}'
+        - Инцидент разрешён
+    required: true
+  - id: root_cause
+    title: Корневая причина (Root Cause)
+    type: text
+    default_body: |
+      _Что сломалось и почему. Если помогает — используй технику «5 почему»._
+    required: true
+  - id: detection
+    title: Обнаружение (Detection)
+    type: list
+    items:
+      - Как обнаружили?
+      - 'Время до обнаружения:'
+      - Можно было обнаружить раньше?
+  - id: resolution
+    title: Разрешение (Resolution)
+    type: list
+    items:
+      - Что остановило «кровотечение»?
+      - Каков долгосрочный фикс?
+  - id: what_went_well
+    title: Что сработало хорошо (What went well)
+    type: list
+    items:
+      - ""
+  - id: what_went_wrong
+    title: Что пошло не так (What went wrong)
+    type: list
+    items:
+      - ""
+  - id: where_got_lucky
+    title: Где нам повезло (Where we got lucky)
+    type: list
+    items:
+      - ""
+  - id: action_items
+    title: Задачи (Action items)
+    type: table
+    columns:
+      - '#'
+      - Действие
+      - Ответственный
+      - Приоритет
+      - Срок
+    rows:
+      - - "1"
+        - ""
+        - ""
+        - P1
+        - ""
+    required: true
+  - id: lessons_learned
+    title: Извлечённые уроки (Lessons learned)
+    type: list
+    items:
+      - ""
+  - id: references
+    title: Ссылки (References)
+    type: list
+    items:
+      - ""
