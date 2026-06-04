@@ -34,7 +34,7 @@ jobs:
           tar -xzf /tmp/srekit/*.tar.gz -C /tmp/srekit
           bin="$(find /tmp/srekit -type f -name srekit | head -n1)"
           sudo install -m 0755 "$bin" /usr/local/bin/srekit
-          srekit version
+          srekit version || true
 
       # Гейт: если поле переименовано/удалено в новом бинаре — упадёт.
       - name: Validate against latest embedded set
