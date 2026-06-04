@@ -97,7 +97,7 @@ srekit templates diff --name-only  # только список изменённ�
 | `.ID` | string | UUID |
 | `.Title` | string | Заголовок расследования |
 | `.CreationDate` | string | RFC3339 |
-| `.ModificationDate` | string | RFC3339; srekit его всё ещё передаёт, но в дефолтном frontmatter он не используется (историю даёт git) |
+| `.ModificationDate` | string | RFC3339, при инициализации = CreationDate |
 
 ### `incident.md.tmpl` — live incident
 
@@ -207,29 +207,6 @@ srekit templates diff --name-only  # только список изменённ�
 | `.Year` | int | Год |
 | `.Author.Name` | string | Имя автора |
 | `.Author.Email` | string | E-mail автора |
-
-## Дополнительные шаблоны (`extra/`, bring-your-own)
-
-srekit подхватывает override строго по известным именам, поэтому шаблоны из
-`extra/` он **не видит автоматически**. Их рендерят явно через `--template`,
-привязав к команде, чьи поля являются надмножеством нужных. Команда `runbook`
-удобна тем, что даёт `.Title`, `.Service`, `.Alert`, `.Now`, `.ID`:
-
-```bash
-srekit runbook --title "Launch X"      --service api --template extra/prr.md.tmpl     --stdout
-srekit runbook --title "Region drill"  --service api --template extra/gameday.md.tmpl --stdout
-srekit runbook --title "Failover test" --service api --template extra/dr-test.md.tmpl --stdout
-srekit runbook --title "High error rate" --service api --alert HighErrorRate --template extra/alert.md.tmpl --stdout
-```
-
-| Файл | Документ | Используемые поля |
-|------|----------|-------------------|
-| `extra/prr.md.tmpl` | Production Readiness Review | `.Title`, `.Service`, `.Now`, `.ID` |
-| `extra/gameday.md.tmpl` | Game Day / chaos experiment | `.Title`, `.Service`, `.Now`, `.ID` |
-| `extra/dr-test.md.tmpl` | DR / failover test report | `.Title`, `.Service`, `.Now`, `.ID` |
-| `extra/alert.md.tmpl` | Alert definition | `.Title`, `.Service`, `.Alert`, `.Now`, `.ID` |
-
-`make validate-extra` рендерит каждый из них через `runbook` как smoke-тест.
 
 ## Что лучше НЕ ломать
 
