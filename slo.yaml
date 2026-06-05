@@ -1,19 +1,20 @@
 version: 1
 
 frontmatter:
-  id: "{{ .ID }}"
-  creation_date: "{{ .Now }}"
+  id: "{{ .Meta.ID }}"
+  creation_date: "{{ .Meta.Now }}"
+  modification_date: "{{ .Meta.Now }}"
   type: slo
-  service: "{{ .Service }}"
+  service: "{{ .Meta.Service }}"
   tags:
     - slo
     - sli
     - reliability
 
-title: "SLO — {{ .Service }}"
+title: "SLO — {{ .Meta.Service }}"
 
 meta_bullets:
-  - "**Сервис (Service):** {{ .Service }}"
+  - "**Сервис (Service):** {{ .Meta.Service }}"
   - "**Команда-владелец (Owner team):** _заполнить_"
   - "**Тир (Tier):** _T0 / T1 / T2_"
   - "**Покрываемое пользовательское действие (User journey):** _какую пользовательскую возможность защищает этот SLO_"
@@ -34,22 +35,21 @@ sections:
       ```promql
       # 401/403 исключены и из числителя, и из знаменателя — это пользовательские
       # ошибки, не сигнал ненадёжности сервиса.
-      sum(rate(http_requests_total{service="{{ .Service }}",code!~"5..",code!~"401|403"}[5m]))
+      sum(rate(http_requests_total{service="{{ .Meta.Service }}",code!~"5..",code!~"401|403"}[5m]))
       /
-      sum(rate(http_requests_total{service="{{ .Service }}",code!~"401|403"}[5m]))
+      sum(rate(http_requests_total{service="{{ .Meta.Service }}",code!~"401|403"}[5m]))
       ```
 
       ### Latency SLI
 
-      - **Хорошие события (Good):** _запросы, обслуженные быстрее {{ .LatencyTarget }}_
+      - **Хорошие события (Good):** _запросы, обслуженные быстрее {{ .Meta.LatencyTarget }}_
       - **Валидные события (Valid):** _все HTTP-запросы к /api/* кроме health-чеков_
 
       ```promql
-      # le должен совпадать с твоим latency-таргетом ({{ .LatencyTarget }}),
-      # выраженным в секундах: 300ms → le="0.3", 1s → le="1".
-      sum(rate(http_request_duration_seconds_bucket{service="{{ .Service }}",le="0.3"}[5m]))
+      # Замени значение le="..." на свой latency-таргет в секундах.
+      sum(rate(http_request_duration_seconds_bucket{service="{{ .Meta.Service }}",le="0.3"}[5m]))
       /
-      sum(rate(http_request_duration_seconds_count{service="{{ .Service }}"}[5m]))
+      sum(rate(http_request_duration_seconds_count{service="{{ .Meta.Service }}"}[5m]))
       ```
   - id: slo_target
     title: Цель SLO (SLO target)
@@ -61,19 +61,19 @@ sections:
       - Заметки
     rows:
       - - Availability
-        - '**{{ .Target }}**'
-        - '{{ .Window }}'
+        - '**{{ .Meta.Target }}**'
+        - '{{ .Meta.Window }}'
         - скользящее
       - - Latency (p99)
-        - < {{ .LatencyTarget }}
-        - '{{ .Window }}'
+        - < {{ .Meta.LatencyTarget }}
+        - '{{ .Meta.Window }}'
         - скользящее
   - id: error_budget
     title: Бюджет ошибок (Error budget)
     type: text
     default_body: |
-      - Окно: {{ .Window }}
-      - Бюджет: `(1 − {{ .Target }}) × window_seconds` = _посчитать_
+      - Окно: {{ .Meta.Window }}
+      - Бюджет: `(1 − {{ .Meta.Target }}) × window_seconds` = _посчитать_
       - Burn-rate алерты:
         - **Быстрое сгорание (Fast burn):** 14.4× за 1ч (пейджер)
         - **Медленное сгорание (Slow burn):** 6× за 6ч (тикет)

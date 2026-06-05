@@ -1,22 +1,23 @@
 version: 1
 
 frontmatter:
-  id: "{{ .ID }}"
-  creation_date: "{{ .Now }}"
+  id: "{{ .Meta.ID }}"
+  creation_date: "{{ .Meta.Now }}"
+  modification_date: "{{ .Meta.Now }}"
   type: error-budget-policy
-  service: "{{ .Service }}"
+  service: "{{ .Meta.Service }}"
   tags:
     - error-budget
     - policy
     - reliability
 
-title: "Политика бюджета ошибок (Error budget policy) — {{ .Service }}"
+title: "Политика бюджета ошибок (Error budget policy) — {{ .Meta.Service }}"
 
 meta_bullets:
-  - "**Сервис (Service):** {{ .Service }}"
+  - "**Сервис (Service):** {{ .Meta.Service }}"
   - "**Команда-владелец (Owner team):** _заполнить_"
-  - "**Связанный SLO (Related SLO):** _ссылка на slo-{{ .Service }}.md_"
-  - "**Дата принятия (Effective from):** {{ .Now }}"
+  - "**Связанный SLO (Related SLO):** _ссылка на slo-{{ .Meta.Service }}.md_"
+  - "**Дата принятия (Effective from):** {{ .Meta.Now }}"
 
 sections:
   - id: purpose

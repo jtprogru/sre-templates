@@ -36,13 +36,13 @@ sections:
       ### Security
 
       -
-  - id: initialversion_today
-    title: '[{{ .InitialVersion }}] - {{ .Today }}'
+  - id: initial_release
+    title: '[{{ .Meta.InitialVersion }}] - {{ .Meta.Today }}'
     type: text
     default_body: |
       ### Added
 
       - Initial release.
 
-      [Unreleased]: https://github.com/{{ .Repo }}/compare/v{{ .InitialVersion }}...HEAD
-      [{{ .InitialVersion }}]: https://github.com/{{ .Repo }}/releases/tag/v{{ .InitialVersion }}
+      [Unreleased]: https://github.com/{{ .Meta.Repo }}/compare/v{{ .Meta.InitialVersion }}...HEAD
+      [{{ .Meta.InitialVersion }}]: https://github.com/{{ .Meta.Repo }}/releases/tag/v{{ .Meta.InitialVersion }}

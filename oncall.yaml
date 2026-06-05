@@ -1,22 +1,22 @@
 version: 1
 
 frontmatter:
-  id: "{{ .ID }}"
-  creation_date: "{{ .Now }}"
+  id: "{{ .Meta.ID }}"
+  creation_date: "{{ .Meta.Now }}"
   type: oncall-report
-  team: "{{ .Team }}"
-  period_start: "{{ .Start }}"
-  period_end: "{{ .End }}"
-  oncaller: "{{ .Author.Name }}"
+  team: "{{ .Meta.Team }}"
+  period_start: "{{ .Meta.Start }}"
+  period_end: "{{ .Meta.End }}"
+  oncaller: "{{ .Meta.Author.Name }}"
   tags:
     - oncall
     - weekly-report
 
-title: "Отчёт по дежурству (On-call report) — {{ .Team }} ({{ .Start }} → {{ .End }})"
+title: "Отчёт по дежурству (On-call report) — {{ .Meta.Team }} ({{ .Meta.Start }} → {{ .Meta.End }})"
 
 meta_bullets:
-  - "**Дежурный (On-caller):** {{ .Author.Name }} <{{ .Author.Email }}>"
-  - "**Период (Period):** {{ .Start }} → {{ .End }}"
+  - "**Дежурный (On-caller):** {{ .Meta.Author.Name }} <{{ .Meta.Author.Email }}>"
+  - "**Период (Period):** {{ .Meta.Start }} → {{ .Meta.End }}"
 
 sections:
   - id: tl_dr
@@ -26,19 +26,13 @@ sections:
       _2–3 предложения: как прошла смена? спокойно / напряжённо / в огне?_
   - id: pages
     title: Пейджеры (Pages)
-    type: table
-    columns:
-      - Время (UTC)
-      - Алерт
-      - Сервис
-      - Действие / результат
-      - Постмортем?
-    rows:
-      - - ""
-        - ""
-        - ""
-        - ""
-        - ""
+    type: text
+    default_body: |
+      | Время (UTC) | Алерт | Сервис | Действие / результат | Постмортем? |
+      |-------------|-------|--------|----------------------|-------------|
+      |             |       |        |                      |             |
+
+      Всего пейджеров: _N_ — требующих действий: _N_ — ложных срабатываний: _N_.
   - id: incidents
     title: Инциденты (Incidents)
     type: text

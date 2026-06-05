@@ -1,23 +1,24 @@
 version: 1
 
 frontmatter:
-  id: "{{ .ID }}"
-  creation_date: "{{ .Now }}"
+  id: "{{ .Meta.ID }}"
+  creation_date: "{{ .Meta.Now }}"
+  modification_date: "{{ .Meta.Now }}"
   type: capacity-plan
-  service: "{{ .Service }}"
-  horizon: "{{ .Horizon }}"
+  service: "{{ .Meta.Service }}"
+  horizon: "{{ .Meta.Horizon }}"
   tags:
     - capacity
     - planning
     - reliability
 
-title: "План ёмкости (Capacity plan) — {{ .Service }}"
+title: "План ёмкости (Capacity plan) — {{ .Meta.Service }}"
 
 meta_bullets:
-  - "**Сервис (Service):** {{ .Service }}"
+  - "**Сервис (Service):** {{ .Meta.Service }}"
   - "**Команда-владелец (Owner team):** _заполнить_"
-  - "**Горизонт планирования (Horizon):** {{ .Horizon }}"
-  - "**Дата плана (Plan date):** {{ .Now }}"
+  - "**Горизонт планирования (Horizon):** {{ .Meta.Horizon }}"
+  - "**Дата плана (Plan date):** {{ .Meta.Now }}"
 
 sections:
   - id: current_capacity

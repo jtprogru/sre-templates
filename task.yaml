@@ -1,18 +1,19 @@
 version: 1
 
 frontmatter:
-  id: "{{ .ID }}"
-  creation_date: "{{ .CreationDate }}"
+  id: "{{ .Meta.ID }}"
+  creation_date: "{{ .Meta.CreationDate }}"
+  modification_date: "{{ .Meta.ModificationDate }}"
   type: investigation
-  title: "{{ .Title }}"
+  title: "{{ .Meta.Title }}"
   tags:
     - investigation
     - debug
 
-title: "Расследование (Investigation) — {{ .Title }}"
+title: "Расследование (Investigation) — {{ .Meta.Title }}"
 
 meta_bullets:
-  - "**Начато (Started):** {{ .CreationDate }}"
+  - "**Начато (Started):** {{ .Meta.CreationDate }}"
   - "**Ответственный (Owner):** _заполнить_"
   - "**Статус (Status):** _open / in-progress / resolved_"
   - "**Связанное (Related):** _алерты, дашборды, тикеты, инциденты_"

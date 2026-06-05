@@ -1,22 +1,22 @@
 version: 1
 
 frontmatter:
-  id: "{{ .ID }}"
-  creation_date: "{{ .Now }}"
+  id: "{{ .Meta.ID }}"
+  creation_date: "{{ .Meta.Now }}"
   type: retrospective
-  team: "{{ .Team }}"
-  sprint: "{{ .Sprint }}"
+  team: "{{ .Meta.Team }}"
+  sprint: "{{ .Meta.Sprint }}"
   tags:
     - retro
     - team
 
-title: "Ретро (Retro) — {{ .Team }} / {{ .Sprint }}"
+title: "Ретро (Retro) — {{ .Meta.Team }} / {{ .Meta.Sprint }}"
 
 meta_bullets:
-  - "**Команда (Team):** {{ .Team }}"
-  - "**Спринт / период (Sprint):** {{ .Sprint }}"
+  - "**Команда (Team):** {{ .Meta.Team }}"
+  - "**Спринт / период (Sprint):** {{ .Meta.Sprint }}"
   - "**Ведущий (Facilitator):** _заполнить_"
-  - "**Дата (Date):** {{ .Now }}"
+  - "**Дата (Date):** {{ .Meta.Now }}"
 
 sections:
   - id: goals_of_this_retro

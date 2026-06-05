@@ -13,103 +13,99 @@ frontmatter:
 
 title: "Постмортем (Postmortem) — {{ .Meta.Title }}"
 
-header_body: |
-  > **Безобвинительный разбор (blameless):** ищем причины в системе, процессах и недостающих защитах — не в людях. Любой действовал исходя из того, что знал и видел в тот момент.
-  
-  - **Тяжесть (Severity):** {{ .Meta.Severity }}
-  - **Ответственный (Owner):** {{ .Meta.Owner | default "<incident owner>" }}
-  - **Начало (Started):** {{ .Meta.Start | default "<start time>" }}
-  - **Конец (Resolved):** {{ .Meta.End | default "<end time>" }}
-  - **Длительность (Duration):** _заполнить после составления хронологии_
-  {{ range .Sections }}
+meta_bullets:
+  - "**Тяжесть (Severity):** {{ .Meta.Severity }}"
+  - '**Ответственный (Owner):** {{ .Meta.Owner | default "<incident owner>" }}'
+  - '**Начало (Started):** {{ .Meta.Start | default "<start time>" }}'
+  - '**Конец (Resolved):** {{ .Meta.End | default "<end time>" }}'
+  - "**Длительность (Duration):** _заполнить после составления хронологии_"
 
 sections:
   - id: summary
-    title: Краткое описание (Summary)
+    title: "Краткое описание (Summary)"
     type: text
+    required: true
     default_body: |
       _Один абзац: что произошло, кого затронуло, как смягчили._
-    required: true
+
   - id: impact
-    title: Влияние (Impact)
+    title: "Влияние (Impact)"
     type: list
+    required: true
     items:
-      - 'Влияние на пользователей:'
-      - 'Расход SLO / SLI:'
-      - 'Внутреннее влияние:'
-    required: true
+      - "Влияние на пользователей:"
+      - "Расход SLO / SLI:"
+      - "Внутреннее влияние:"
+
   - id: timeline
-    title: Хронология (Timeline)
+    title: "Хронология (Timeline)"
     type: table
-    default_body: (Все времена в UTC.)
-    columns:
-      - Время
-      - Событие
-    rows:
-      - - '{{ .Meta.Start }}'
-        - Инцидент начался
-      - - ""
-        - ""
-      - - '{{ .Meta.End }}'
-        - Инцидент разрешён
     required: true
+    default_body: "(Все времена в UTC.)"
+    columns: ["Время", "Событие"]
+    rows:
+      - ["{{ .Meta.Start }}", "Инцидент начался"]
+      - ["", ""]
+      - ["{{ .Meta.End }}", "Инцидент разрешён"]
+
   - id: root_cause
-    title: Корневая причина (Root Cause)
+    title: "Корневая причина (Root Cause)"
     type: text
+    required: true
     default_body: |
       _Что сломалось и почему. Если помогает — используй технику «5 почему»._
-    required: true
+
   - id: detection
-    title: Обнаружение (Detection)
+    title: "Обнаружение (Detection)"
     type: list
+    required: false
     items:
-      - Как обнаружили?
-      - 'Время до обнаружения:'
-      - Можно было обнаружить раньше?
+      - "Как обнаружили?"
+      - "Время до обнаружения:"
+      - "Можно было обнаружить раньше?"
+
   - id: resolution
-    title: Разрешение (Resolution)
+    title: "Разрешение (Resolution)"
     type: list
+    required: false
     items:
-      - Что остановило «кровотечение»?
-      - Каков долгосрочный фикс?
+      - "Что остановило «кровотечение»?"
+      - "Каков долгосрочный фикс?"
+
   - id: what_went_well
-    title: Что сработало хорошо (What went well)
+    title: "Что сработало хорошо (What went well)"
     type: list
-    items:
-      - ""
+    required: false
+    items: [""]
+
   - id: what_went_wrong
-    title: Что пошло не так (What went wrong)
+    title: "Что пошло не так (What went wrong)"
     type: list
-    items:
-      - ""
+    required: false
+    items: [""]
+
   - id: where_got_lucky
-    title: Где нам повезло (Where we got lucky)
+    title: "Где нам повезло (Where we got lucky)"
     type: list
-    items:
-      - ""
+    required: false
+    items: [""]
+
   - id: action_items
-    title: Задачи (Action items)
+    title: "Задачи (Action items)"
     type: table
-    columns:
-      - '#'
-      - Действие
-      - Ответственный
-      - Приоритет
-      - Срок
-    rows:
-      - - "1"
-        - ""
-        - ""
-        - P1
-        - ""
     required: true
+    columns: ["#", "Действие", "Ответственный", "Приоритет", "Срок"]
+    rows:
+      - ["1", "", "", "P1", ""]
+
   - id: lessons_learned
-    title: Извлечённые уроки (Lessons learned)
+    title: "Извлечённые уроки (Lessons learned)"
     type: list
-    items:
-      - ""
+    required: false
+    items: [""]
+
   - id: references
-    title: Ссылки (References)
+    title: "Ссылки (References)"
     type: list
-    items:
-      - ""
+    required: false
+    items: [""]

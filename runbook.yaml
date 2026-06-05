@@ -1,21 +1,22 @@
 version: 1
 
 frontmatter:
-  id: "{{ .ID }}"
-  creation_date: "{{ .Now }}"
+  id: "{{ .Meta.ID }}"
+  creation_date: "{{ .Meta.Now }}"
+  modification_date: "{{ .Meta.Now }}"
   type: runbook
-  title: "{{ .Title }}"
-  service: "{{ .Service }}"
-  alert: "{{ .Alert }}"
+  title: "{{ .Meta.Title }}"
+  service: "{{ .Meta.Service }}"
+  alert: "{{ .Meta.Alert }}"
   tags:
     - runbook
     - oncall
 
-title: "Рунбук (Runbook) — {{ .Title }}"
+title: "Рунбук (Runbook) — {{ .Meta.Title }}"
 
 meta_bullets:
-  - "**Сервис (Service):** {{ .Service | default \"<service name>\" }}"
-  - "**Алерт (Alert):** {{ .Alert | default \"<alert name>\" }}"
+  - "**Сервис (Service):** {{ .Meta.Service | default \"<service name>\" }}"
+  - "**Алерт (Alert):** {{ .Meta.Alert | default \"<alert name>\" }}"
   - "**Команда-владелец (Owner team):** _заполнить_"
   - "**Эскалация дежурным (On-call escalation):** _заполнить_"
 
@@ -25,7 +26,7 @@ sections:
     type: text
     default_body: |
       _Что видит пользователь / мониторинг? Конкретные сигналы: горящий алерт, панель дашборда, паттерн в логах._
-  - id: slo_severity_slo_impact
+  - id: severity_slo_impact
     title: Тяжесть и влияние на SLO (Severity & SLO impact)
     type: text
     default_body: |
@@ -67,7 +68,7 @@ sections:
     title: Постфактум (After the fact)
     type: text
     default_body: |
-      - Заводим постмортем, если SEV ≥ 2 (подстрой порог под свою рубрику).
+      - Заводим постмортем, если SEV ≥ _уровень_.
       - Обнови этот рунбук всем, что удивило.
   - id: references
     title: Ссылки (References)

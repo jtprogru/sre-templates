@@ -1,12 +1,12 @@
 version: 1
 
 frontmatter:
-  id: "{{ .ID }}"
-  creation_date: "{{ .Now }}"
+  id: "{{ .Meta.ID }}"
+  creation_date: "{{ .Meta.Now }}"
   decision_date:
-  status: "{{ .Status }}"
+  status: "{{ .Meta.Status }}"
   type: rfc
-  title: "{{ .Title }}"
+  title: "{{ .Meta.Title }}"
   deciders: []
   supersedes:
   superseded_by:
@@ -14,13 +14,13 @@ frontmatter:
     - rfc
     - adr
 
-title: "RFC-{{ shortID .ID 8 }} — {{ .Title }}"
+title: "RFC-{{ shortID .Meta.ID 8 }} — {{ .Meta.Title }}"
 
 meta_bullets:
-  - "**Статус (Status):** {{ .Status }}"
-  - "**Автор (Author):** {{ .Author.Name }} <{{ .Author.Email }}>"
+  - "**Статус (Status):** {{ .Meta.Status }}"
+  - "**Автор (Author):** {{ .Meta.Author.Name }} <{{ .Meta.Author.Email }}>"
   - "**Принимающие решение (Deciders):** _имена людей, чья подпись нужна_"
-  - "**Создан (Created):** {{ .Now }}"
+  - "**Создан (Created):** {{ .Meta.Now }}"
   - "**Решено (Decided):** _заполнить, когда статус станет accepted / rejected_"
 
 sections:
