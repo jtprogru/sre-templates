@@ -12,7 +12,8 @@ indent_size = 2
 # Markdown допускает значимые двойные пробелы в конце строки.
 trim_trailing_whitespace = false
 
-[*.md.tmpl]
+[*.yaml]
+# В телах секций значимы конечные пробелы markdown-разметки.
 trim_trailing_whitespace = false
 
 [Makefile]
