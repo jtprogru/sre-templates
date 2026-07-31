@@ -9,11 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
--
+- Per-template YAML-манифесты формата v1 (`<name>.yaml`, секции с `id`).
 
 ### Changed
 
--
+- Шаблоны переведены с `.md.tmpl` на `<name>.yaml`, поля команд — под `.Meta.*`.
+- README и `TEMPLATES.md` описывают v1-формат и актуальный набор команд srekit.
+- CI: запиненный srekit поднят до `v0.30.0`, версия печатается через `--version`.
 
 ### Deprecated
 
@@ -21,7 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
--
+- `capacity.yaml` и `retro.yaml` — команд `capacity` и `retro` в srekit больше нет.
+- `extra/` bring-your-own шаблоны и их проверки: флага `--template` у команд нет.
 
 ### Fixed
 
