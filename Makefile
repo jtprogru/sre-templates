@@ -5,7 +5,7 @@ export SREKIT_TEMPLATES_DIR := $(CURDIR)
 
 .DEFAULT_GOAL := help
 
-.PHONY: help validate validate-extra diff diff-name pull hooks
+.PHONY: help validate diff diff-name pull hooks
 
 help: ## Показать список целей
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
@@ -13,13 +13,6 @@ help: ## Показать список целей
 
 validate: ## Проверить override-шаблоны (парс + dry-run рендер)
 	srekit templates validate
-
-validate-extra: ## Проверить extra/ шаблоны рендером через команду runbook
-	@set -e; for t in extra/*.md.tmpl; do \
-		echo "rendering $$t"; \
-		srekit runbook --title "smoke" --service smoke --alert smoke \
-			--template "$$t" --stdout >/dev/null; \
-	done
 
 diff: ## Diff против embedded-версий
 	srekit templates diff
