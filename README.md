@@ -31,49 +31,27 @@ make diff            # diff против embedded-версий
 
 ## Шаблоны
 
-### Native (переопределяют встроенные srekit)
+Один артефакт — один `<name>.yaml` в формате v1 (`version: 1`, секции с `id`).
+Имена файлов фиксированы: по ним srekit находит override.
 
-| Файл | Документ |
-|------|----------|
-| `incident.md.tmpl` | Живой инцидент |
-| `postmortem.md.tmpl` | Постмортем (blameless) |
-| `task.md.tmpl` | Лог расследования |
-| `runbook.md.tmpl` | Рунбук |
-| `slo.md.tmpl` | SLO / SLI (с готовым PromQL) |
-| `ebp.md.tmpl` | Error budget policy |
-| `capacity.md.tmpl` | План ёмкости |
-| `oncall.md.tmpl` | Отчёт по дежурству |
-| `retro.md.tmpl` | Ретроспектива |
-| `rfc.md.tmpl` | RFC / ADR |
-| `changelog.md.tmpl` | Changelog (Keep a Changelog) |
-| `license_{mit,apache2,wtfpl}.tmpl` | Лицензии |
-
-### Extra (bring-your-own, через `--template`)
-
-srekit ищет override-шаблоны строго по именам, поэтому шаблоны из `extra/`
-он **не подхватывает автоматически**. Их рендерят явно через флаг
-`--template`, привязав к команде с подходящим набором полей (`runbook`
-даёт `.Title .Service .Alert .Now .ID`):
-
-```bash
-srekit runbook --title "Launch X" --service api --template extra/prr.md.tmpl --stdout
-srekit runbook --title "Region failover" --service api --template extra/gameday.md.tmpl --stdout
-```
-
-| Файл | Документ | Рендерить через |
-|------|----------|------------------|
-| `extra/prr.md.tmpl` | Production Readiness Review | `runbook` (`--title`, `--service`) |
-| `extra/gameday.md.tmpl` | Game Day / chaos experiment | `runbook` (`--title`, `--service`) |
-| `extra/dr-test.md.tmpl` | DR / failover test report | `runbook` (`--title`, `--service`) |
-| `extra/alert.md.tmpl` | Alert definition | `runbook` (`--title`, `--service`, `--alert`) |
+| Файл | Документ | Команда |
+|------|----------|---------|
+| `task.yaml` | Лог расследования | `srekit task` |
+| `postmortem.yaml` | Постмортем (blameless) | `srekit postmortem` |
+| `runbook.yaml` | Рунбук | `srekit runbook` |
+| `slo.yaml` | SLO / SLI (с готовым PromQL) | `srekit slo` |
+| `ebp.yaml` | Error budget policy | `srekit ebp` |
+| `oncall.yaml` | Отчёт по дежурству | `srekit oncall-report` |
+| `rfc.yaml` | RFC / ADR | `srekit rfc` |
+| `changelog.yaml` | Changelog (Keep a Changelog) | `srekit changelog` |
 
 ## CI
 
 [`.github/workflows/validate.yml`](./.github/workflows/validate.yml) на каждый
-PR ставит `srekit` из релиза и гоняет `srekit templates validate` + рендер
-шаблонов из `extra/`. Это ловит опечатки в `.Field` и сломанный синтаксис.
-Если бинарь srekit лежит не в `jtprogru/srekit` или ассеты названы иначе —
-поправь `SREKIT_REPO` / `SREKIT_ASSET_PATTERN` в начале workflow.
+PR ставит `srekit` из релиза и гоняет `srekit templates validate`. Это ловит
+опечатки в `.Meta.*` и сломанный синтаксис шаблона. Если бинарь srekit лежит
+не в `jtprogru/srekit` или ассеты названы иначе — поправь `SREKIT_REPO` /
+`SREKIT_ASSET_PATTERN` в начале workflow.
 
 ## Разработка
 
