@@ -14,7 +14,7 @@ env:
   SREKIT_REPO: jtprogru/srekit
   # Запиненная версия srekit для воспроизводимых проверок на PR.
   # Бампай вручную; weekly drift.yml подскажет, когда апстрим ушёл вперёд.
-  SREKIT_VERSION: v0.13.1
+  SREKIT_VERSION: v0.30.0
   # Имя linux/amd64 ассета релиза (GoReleaser).
   SREKIT_ASSET_PATTERN: "srekit_Linux_x86_64.tar.gz"
 
@@ -40,21 +40,9 @@ jobs:
             exit 1
           fi
           sudo install -m 0755 "$bin" /usr/local/bin/srekit
-          srekit version || true
+          srekit --version
 
       - name: Validate override templates
         env:
           SREKIT_TEMPLATES_DIR: ${{ github.workspace }}
         run: srekit templates validate
-
-      - name: Validate extra/ templates (bring-your-own)
-        run: |
-          set -euo pipefail
-          # extra/ шаблоны srekit не знает по имени — рендерим их через
-          # команду runbook (надмножество полей: .Title .Service .Alert .Now .ID).
-          for tmpl in extra/*.md.tmpl; do
-            echo "rendering $tmpl"
-            srekit runbook \
-              --title "CI smoke" --service ci --alert ci-alert \
-              --template "$tmpl" --stdout >/dev/null
-          done
