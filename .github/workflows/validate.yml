@@ -14,7 +14,7 @@ env:
   SREKIT_REPO: jtprogru/srekit
   # Запиненная версия srekit для воспроизводимых проверок на PR.
   # Бампай вручную; weekly drift.yml подскажет, когда апстрим ушёл вперёд.
-  SREKIT_VERSION: v0.30.0
+  SREKIT_VERSION: v0.31.0
   # Имя linux/amd64 ассета релиза (GoReleaser).
   SREKIT_ASSET_PATTERN: "srekit_Linux_x86_64.tar.gz"
 
