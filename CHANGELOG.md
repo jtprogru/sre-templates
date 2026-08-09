@@ -12,12 +12,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Per-template YAML-манифесты формата v1 (`<name>.yaml`, секции с `id`).
 - `footer_body` в `changelog.yaml`: блок link reference definitions вынесен на
   уровень документа, поэтому секция, поданная через `--from`, его не потеряет.
+- `changelog.ru.yaml` — языковой вариант артефакта для `srekit changelog --lang ru`
+  (появился в srekit `v0.32.0`).
 
 ### Changed
 
 - Шаблоны переведены с `.md.tmpl` на `<name>.yaml`, поля команд — под `.Meta.*`.
 - README и `TEMPLATES.md` описывают v1-формат и актуальный набор команд srekit.
-- CI: запиненный srekit поднят до `v0.31.0`, версия печатается через `--version`.
+- CI: запиненный srekit поднят до `v0.32.0`, версия печатается через `--version`.
   Ниже `v0.31.0` ключ `footer_body` игнорируется молча — compare-ссылки просто
   не попадают в результат, `templates validate` этого не ловит.
 
