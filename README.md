@@ -44,6 +44,10 @@ make diff            # diff против embedded-версий
 | `oncall.yaml` | Отчёт по дежурству | `srekit oncall-report` |
 | `rfc.yaml` | RFC / ADR | `srekit rfc` |
 | `changelog.yaml` | Changelog (Keep a Changelog) | `srekit changelog` |
+| `changelog.ru.yaml` | Changelog, русские типы изменений | `srekit changelog --lang ru` |
+
+Суффикс `.<lang>` перед `.yaml` — языковой вариант артефакта: srekit берёт его,
+когда язык задан через `--lang` или `changelog_lang` в конфиге.
 
 ## CI
 
